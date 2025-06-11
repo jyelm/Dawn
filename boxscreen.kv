@@ -1,0 +1,98 @@
+#:set ACCENT_COLOR (0.2, 0.2, 0.3, .95)
+#:set BACKGROUND_COLOR (0.1, 0.1, 0.1, 1)
+#:set TEXT_COLOR (1, 1, 1, 1)
+
+BoxScreen:
+
+<MainLabel>:
+    # all your canvas.before for the rounded bg…
+
+    canvas.before:
+        Color:
+            rgba: ACCENT_COLOR
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [30,30,30,30]   
+
+    #  Draw a fixed-thickness white border, but use `border_alpha` for the Color’s alpha:
+    canvas.after:
+        Color:
+            rgba: 1, 1, 1, root.border_alpha   # only alpha changes over time
+        Line:
+            width: 4
+            rounded_rectangle: self.x, self.y, self.width, self.height, 30
+
+<BoxScreen>:
+    id: screen
+    orientation: 'vertical'
+    spacing: 20
+    padding: 20
+    canvas.before:
+        Color:
+            rgba: BACKGROUND_COLOR #the background behind everything
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        pos_hint: {'top': 1}
+        size_hint_y: .3
+        spacing: 20
+        Label:
+            text: root.current_time
+            text_size: self.size       # wrap at the widget’s width
+            font_size: '20sp'
+            font_name: "fonts/JetBrainsMono-ExtraBold.ttf"
+            halign: 'center'
+            valign: 'middle'
+            color: 1, 1, 1, 1    # white text
+            canvas.before:
+                Color:
+                    rgba: ACCENT_COLOR
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [30,30,30,30]
+        Label:
+            text: root.local_weather
+            text_size: self.size       # wrap at the widget’s width
+            font_size: '10sp'
+            font_name: "fonts/JetBrainsMono-ExtraBold.ttf"
+            halign: 'center'
+            valign: 'middle'
+            color: 1, 1, 1, 1    # white text
+            canvas.before:
+                Color:
+                    rgba: ACCENT_COLOR
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [30,30,30,30]                    
+        Label:
+            text: "Battery"
+            text_size: self.size       # wrap at the widget’s width
+            font_size: '20sp'
+            font_name: "fonts/JetBrainsMono-ExtraBold.ttf"
+            halign: 'center'
+            valign: 'middle'        
+            color: 1, 1, 1, 1    # white text
+            canvas.before:
+                Color:
+                    rgba: ACCENT_COLOR
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [30,30,30,30]
+    BoxLayout:
+        size_hint: 1, .7
+        MainLabel:
+            # Font size calculation based on available space and text length
+            font_size: self.font_scale  # self. modifies the current widget properties
+            text: root.displayed_response
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            font_name: "fonts/JetBrainsMono-ExtraBold.ttf"
+            color: 1, 1, 1, 1    # white text
+    
+  

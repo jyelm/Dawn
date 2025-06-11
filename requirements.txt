@@ -1,0 +1,12 @@
+speechrecognition
+pyttsx3
+pyaudio
+numpy
+kivy[base]
+openai
+python_weather
+datetime
+ollama
+tzdata
+fastapi
+uvicorn
