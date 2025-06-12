@@ -214,10 +214,7 @@ class GUIManagerApp(App):
         App.get_running_app().stop()
     
     def update(self, text, sync_with_speech=False, word_mode=False):
-        async def get_message():
-            result = await server.add_message()
-            return result
-        get_message()
+        server.add_message(text)
         """
         Update the display text
         sync_with_speech: if True, animation duration matches estimated speech time

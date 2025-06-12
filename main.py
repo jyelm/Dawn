@@ -126,10 +126,9 @@ def audio_loop():
 
 if __name__ == "__main__":
     #Database and fast api server
-
+    db.init_db()
+    server.run_api()
     #GUI manager
     g = gm.GUIService()
     threading.Thread(target=audio_loop, args=(), daemon=True).start()
     g.start()
-    threading.Thread(target = db.init_db(), args = (), daemon=True).start()
-    server.run_api()

@@ -13,7 +13,7 @@ def get_db():
     return conn
 
 @app.post("/messages/")
-async def add_message(content: str):
+def add_message(content: str):
     db = get_db()
     db.execute("INSERT INTO messages (content) VALUES (?)", (content,))
     db.commit()
@@ -21,7 +21,7 @@ async def add_message(content: str):
     return {"status": "ok"}
 
 @app.get("/messages/")
-async def get_messages(limit: int = 50):
+def get_messages(limit: int = 50):
     db = get_db()
     rows = db.execute(
         "SELECT content FROM messages ORDER BY id DESC LIMIT ?", (limit,)
@@ -33,5 +33,5 @@ def make_server():
     uvicorn.run(app, host="127.0.0.1", port=8000)
 
 def run_api():
-    threading.Thread(target = make_server(), args = (), daemon=True).start()
+    threading.Thread(target = make_server, args = (), daemon=True).start()
 
