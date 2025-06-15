@@ -83,6 +83,8 @@ class BoxScreen(BoxLayout):
         Clock.schedule_interval(self.update_time, 1)
         self._words = []
         self._animation_mode = "char"  # "char" or "word"
+        self.history_shown = False
+
         
         threading.Thread(
             target=self._fetch_weather_in_thread,
@@ -182,7 +184,7 @@ class BoxScreen(BoxLayout):
         mode = "word" if use_word_mode else "char"
         self.animate_response(text, duration=duration, mode=mode)
     # Inside BoxScreen
-    def show_history(self):
+    def show_history_messages(self):
         messages = server.get_messages(limit=50)
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
@@ -195,8 +197,31 @@ class BoxScreen(BoxLayout):
 
     # Example of toggling when user taps or swipes:
     def on_touch_up(self, touch):
-        if True:
-            self.show_history()
+        # single‐tap shows history (if it isn’t already shown)
+        if not touch.is_double_tap and not self.history_shown:
+            self.show_history_messages()
+            self.history_shown = True
+            return True
+        return super().on_touch_up(touch)
+
+    def on_touch_down(self, touch):
+        # double‐tap hides history (if it is shown)
+        if touch.is_double_tap and self.history_shown:
+            self.hide_history()
+            self.history_shown = False
+            return True
+        return super().on_touch_down(touch)
+
+    def show_history(self):
+        # your code to switch to the history layout
+        self.clear_widgets()
+        self.add_widget(self.show_history_messages())
+
+    def hide_history(self):
+        # your code to switch back to your previous layout
+        self.clear_widgets()
+        self.add_widget(BoxScreen())
+
 
 
 
