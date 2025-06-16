@@ -192,7 +192,7 @@ class BoxScreen(BoxLayout):
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
         for msg in messages:
-            layout.add_widget(Label(text=msg, size_hint_y=None, height=40, font_name="fonts/JetBrainsMono-ExtraBold.ttf",
+            layout.add_widget(Label(text=msg, size_hint_y=None, height=self.minimum_height, font_name="fonts/JetBrainsMono-ExtraBold.ttf",
                                      text_size=self.size, halign="center", valign="center"))
         scroll = ScrollView()
         scroll.add_widget(layout)
@@ -248,6 +248,7 @@ class GUIManagerApp(App):
         App.get_running_app().stop()
     
     def update(self, text, sync_with_speech=False, word_mode=False):
+        
         def log_task():
             try:
                 server.log_message(text)
@@ -255,6 +256,7 @@ class GUIManagerApp(App):
                 print(f"Failed to log message: {e}")
 
         threading.Thread(target=log_task, daemon=True).start()
+        
         """
         Update the display text
         sync_with_speech: if True, animation duration matches estimated speech time
