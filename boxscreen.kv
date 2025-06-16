@@ -84,8 +84,10 @@ BoxScreen:
                     size: self.size
                     radius: [30,30,30,30]
     BoxLayout:
+        id: content_area
         size_hint: 1, .7
         MainLabel:
+            id: main_label
             # Font size calculation based on available space and text length
             font_size: self.font_scale  # self. modifies the current widget properties
             text: root.displayed_response

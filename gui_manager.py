@@ -84,6 +84,9 @@ class BoxScreen(BoxLayout):
         self._words = []
         self._animation_mode = "char"  # "char" or "word"
         self.history_shown = False
+        self.content_area = self.ids.get("content_area")
+        self.main_label = self.ids.get("main_label")
+        self._history_scroll = None
 
         
         threading.Thread(
@@ -189,11 +192,15 @@ class BoxScreen(BoxLayout):
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
         for msg in messages:
-            layout.add_widget(Label(text=msg, size_hint_y=None, height=40))
-        scroll = ScrollView(size=self.size)
+            layout.add_widget(Label(text=msg, size_hint_y=None, height=40, font_name="fonts/JetBrainsMono-ExtraBold.ttf",
+                                     text_size=self.size, halign="center", valign="center"))
+        scroll = ScrollView()
         scroll.add_widget(layout)
-        self.clear_widgets()
-        self.add_widget(scroll)
+        self._history_scroll = scroll
+
+        if self.content_area:
+            self.content_area.clear_widgets()
+            self.content_area.add_widget(scroll)
 
     # Example of toggling when user taps or swipes:
     def on_touch_up(self, touch):
@@ -214,13 +221,15 @@ class BoxScreen(BoxLayout):
 
     def show_history(self):
         # your code to switch to the history layout
-        self.clear_widgets()
-        self.add_widget(self.show_history_messages())
+        # Display history in the content area
+        self.show_history_messages()
 
     def hide_history(self):
-        # your code to switch back to your previous layout
-        self.clear_widgets()
-        self.add_widget(BoxScreen())
+        # Restore the main label in the content area
+        if self.content_area:
+            self.content_area.clear_widgets()
+            if self.main_label:
+                self.content_area.add_widget(self.main_label)
 
 
 
