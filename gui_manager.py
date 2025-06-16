@@ -248,7 +248,13 @@ class GUIManagerApp(App):
         App.get_running_app().stop()
     
     def update(self, text, sync_with_speech=False, word_mode=False):
-        server.add_message(text)
+        def log_task():
+            try:
+                server.log_message(text)
+            except Exception as e:
+                print(f"Failed to log message: {e}")
+
+        threading.Thread(target=log_task, daemon=True).start()
         """
         Update the display text
         sync_with_speech: if True, animation duration matches estimated speech time

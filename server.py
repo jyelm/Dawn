@@ -8,16 +8,22 @@ DATABASE = "chat_history.db"
 
 # Helper function to get a DB connection
 def get_db():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(DATABASE, timeout = 5)
     conn.row_factory = sqlite3.Row
     return conn
 
+def log_message(content: str):
+    """Insert a message into the history database."""
+    db = get_db()
+    try:
+        db.execute("INSERT INTO messages (content) VALUES (?)", (content,))
+        db.commit()
+    finally:
+        db.close()
+
 @app.post("/messages/")
 def add_message(content: str):
-    db = get_db()
-    db.execute("INSERT INTO messages (content) VALUES (?)", (content,))
-    db.commit()
-    db.close()
+    log_message(content)
     return {"status": "ok"}
 
 @app.get("/messages/")

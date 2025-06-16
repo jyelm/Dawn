@@ -94,13 +94,16 @@ def chat_with_deepseek(user_input):
 
             Avoid adding extra commentary or explanation. Only rephrase the input question as a complete sentence with the correct answer inserted.
         """ + f"\n Current Date is: {current_date}"
-    response = ollama.chat(
-        model ='deepseek-r1',  
-        messages = [
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": user_input}
-        ]
-    )
+    try:
+        response = ollama.chat(
+            model ='deepseek-r1',
+            messages = [
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": user_input}
+            ]
+        )
+    except Exception as e:
+        return f"Error contacting DeepSeek: {e}"
 
     result = response['message']['content']
     result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
