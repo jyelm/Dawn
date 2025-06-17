@@ -65,7 +65,7 @@ def get_audio():
             MyText = r.recognize_google(audio2)
             MyText = MyText.lower()
             
-            if MyText.split(" ")[0] == "alexa":
+            if MyText.split(" ")[0] == "dawn":
                 return MyText
             
     except sr.RequestError as e:
@@ -96,18 +96,18 @@ def audio_loop():
                 while(1):
                     prompt = get_audio()
 
-                    if prompt == "alexa stop":
+                    if prompt == "dawn stop":
                         count = 0
                         break
 
-                    if not prompt == None and prompt.split()[0] == "alexa":
+                    if not prompt == None and prompt.split()[0] == "dawn":
                         # Show the prompt without speech sync
                         g.update(prompt, sync_with_speech=False)
                         
                         # Show "Thinking..." without speech sync
                         g.update("Thinking...", sync_with_speech=False)
 
-                        response = chatgpt.chat_with_deepseek(prompt)  #can change to chat gpt
+                        response = chatgpt.chat_with_gpt(prompt)  #can change to chat gpt
                         
                         # Animate response synchronized with speech
                         # Use word_mode=True for word-by-word animation
@@ -132,3 +132,4 @@ if __name__ == "__main__":
     g = gm.GUIService()
     threading.Thread(target=audio_loop, args=(), daemon=True).start()
     g.start()
+
