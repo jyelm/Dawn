@@ -7,7 +7,7 @@ from openai import OpenAI
 import ollama 
 import re
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="")
 
 def check_for_event_file():
     if not os.path.exists("reminders.csv"):
